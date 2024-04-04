@@ -42,8 +42,6 @@ void *comportamiento_automovil(void *arg) {
     struct Puente* miPuente = &puente;
 
         pthread_mutex_lock(&mutex);
-        if(carrosEnPuente>0){miPuente->estado=true;}//puente ocupado
-        if(carrosEnPuente==0){miPuente->estado=false;}//habilito el puente
 
         //|| automovil->estado=='o'&& carrosOaE>1 && carrosEaO==0 || automovil->estado =='e'&& carrosEaO>1 && carrosOaE==0
     while (carrosEnPuente > 0 && (automovil->sentido == 'o' && carrosOaE == 0 && carrosEaO >= 1) || carrosEnPuente > 0 && (automovil->sentido == 'e' && carrosEaO == 0 && carrosOaE >= 1)) {
@@ -51,7 +49,6 @@ void *comportamiento_automovil(void *arg) {
         printf("E");
         pthread_cond_wait(&cond_cruzar, &mutex);
     }
-            if(!automovil->estado) {
                 carrosEnPuente++;
                 if(automovil->sentido=='o'){carrosOaE++;} //viene del oeste va hacia el este
                 if(automovil->sentido=='e'){carrosEaO++;} //viene del este va hacia el oeste
@@ -63,7 +60,6 @@ void *comportamiento_automovil(void *arg) {
                 printf("2: carros en puente: %d, ID del carro: %d\n \n", carrosEnPuente, automovil->id );
                 printf("2: carros en puente de este a oeste: %d , ID del carro: %d\n\n", carrosEaO, automovil->id );
                 printf("2: carros en puente de oeste a este: %d, ID del carro: %d\n\n", carrosOaE, automovil->id );
-                printf("2: El valor del booleano es: %s, ID del carro: %d\n", miPuente->estado ? "ocupado" : "libre",  automovil->id, "\n");
 
                 pthread_mutex_lock(&mutex);
                 carrosEnPuente--;
@@ -71,13 +67,8 @@ void *comportamiento_automovil(void *arg) {
                 if(automovil->sentido=='e'){carrosEaO--;}
                 pthread_cond_signal(&cond_cruzar); // Señalar a otros automóviles que puedan cruzar
                 pthread_mutex_unlock(&mutex);
-                cont = false;
-            }
 
-        pthread_mutex_unlock(&mutex);
-
-
-    return NULL;
+    //return NULL;
 }
 
 int main() {
