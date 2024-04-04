@@ -46,7 +46,7 @@ void *comportamiento_automovil(void *arg) {
         if(carrosEnPuente==0){miPuente->estado=false;}//habilito el puente
 
         //|| automovil->estado=='o'&& carrosOaE>1 && carrosEaO==0 || automovil->estado =='e'&& carrosEaO>1 && carrosOaE==0
-    while (carrosEnPuente > 0 || (automovil->sentido == 'o' && carrosOaE == 0 && carrosEaO >= 1) || (automovil->sentido == 'e' && carrosEaO == 0 && carrosOaE >= 1)) {
+    while (carrosEnPuente > 0 && (automovil->sentido == 'o' && carrosOaE == 0 && carrosEaO >= 1) || carrosEnPuente > 0 && (automovil->sentido == 'e' && carrosEaO == 0 && carrosOaE >= 1)) {
         // Esperar a que el puente esté disponible o haya espacio en el sentido adecuado
         printf("E");
         pthread_cond_wait(&cond_cruzar, &mutex);
